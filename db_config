@@ -1,0 +1,19 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+from configparser import ConfigParser
+
+connection_string = 'postgresql+psycopg2://postgres:admin@localhost:5431/flights'
+
+config = ConfigParser()
+config.read("/Users/liamgamili/PycharmProjects/projectflights/config.conf")
+# if you want to create a table from base the class needs to inherit from declarative_base
+Base = declarative_base()
+engine = create_engine(connection_string, echo=True)
+
+
+def create_all_entities():
+    Base.metadata.create_all(engine)
+
+
+Session = sessionmaker()
+local_session = Session(bind=engine)
